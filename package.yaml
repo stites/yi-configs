@@ -1,0 +1,41 @@
+name: yi-configs
+version: 0.0.1
+synopsis: My Yi configs (to be run as a submodule in yi-editor/yi)
+maintainer: sam@stites.io
+license: BSD3
+github: stites/yi-configs
+category: Yi
+
+ghc-options: -Wall -ferror-spans -threaded -eventlog -rtsopts
+
+dependencies:
+    - base >= 4.8 && < 5
+    - microlens-platform >= 0.3.4.0
+    - mtl >= 2.2.1
+    - optparse-applicative >= 0.13.0.0
+    - yi-core >= 0.16.0
+    - yi-misc-modes >= 0.16.0
+    - yi-mode-haskell >= 0.16.0
+    - yi-mode-javascript >= 0.16.0
+    - yi-rope >= 0.7.0.1
+    - yi-intero >= 0.16.0
+    - text
+    - attoparsec
+    - yi-keymap-vim
+    - yi-frontend-vty
+    - yi-fuzzy-open
+    - yi-snippet
+    - filepath
+    - directory
+    - process
+    - vector
+    - yi-language
+    - containers
+    - binary
+    - data-default
+
+    - compiler-warnings
+executables:
+    yi:
+        main: Main.hs
+        source-dirs: .
