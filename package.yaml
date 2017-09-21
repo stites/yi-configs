@@ -33,9 +33,9 @@ dependencies:
     - containers
     - binary
     - data-default
-
     - compiler-warnings
+
 executables:
     yi:
         main: Main.hs
-        source-dirs: .
+        source-dirs: exe
