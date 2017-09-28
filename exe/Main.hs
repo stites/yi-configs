@@ -96,7 +96,6 @@ myKeymapSet = V.mkKeymapSet $ V.defVimConfig `override` \super this ->
     let eval = V.pureEval this
     in super
         { V.vimBindings = myBindings eval ++ V.vimBindings super
-        -- , V.vimRelayout = colemakRelayout
         , V.vimExCommandParsers = interoExCommands <> V.vimExCommandParsers super
         }
 
@@ -115,8 +114,6 @@ myBindings eval =
   , nmap  "<C-S-h>"  (withCurrentBuffer (transposeB unitWord Backward))
   , nmap  "<C-@>"  showErrorE
   , nmap  "<M-d>"  debug
-  , nmapY  "s"     (jumpToNextErrorInCurrentBufferY Forward)
-  , nmapY  "S"     (jumpToNextErrorY Forward)
   , nmap   ",s"    insertErrorMessageE
   , imapY  "<Tab>" (withEditor expander)
   ]

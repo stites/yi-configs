@@ -39,3 +39,7 @@ executables:
     yi:
         main: Main.hs
         source-dirs: exe
+
+#   yi-test:
+#       main: Main.hs
+#       source-dirs: exe

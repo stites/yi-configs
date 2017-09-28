@@ -52,5 +52,6 @@ executable yi
       Make
       MyIntero
       MySnippets
+      Yi.Ghcid
       YiWarning
   default-language: Haskell2010
