@@ -1,0 +1,3 @@
+[submodule "yi"]
+	path = yi
+	url = git@github.com:yi-editor/yi.git
