@@ -24,9 +24,11 @@ codeSnippets :: [Snippet]
 codeSnippets =
   [ Snippet "m" $ do
       moduleName <- guessModuleName <$> refer filename
-      line ("module " <> moduleName <> "    ) where")
+      line ("module " <> moduleName <> " where")
   , Snippet "un" $ lit "undefined"
-  , Snippet "(\\" $ void (lit "(\\ " *> place "_" <* lit " -> " <* place "undefined" <* lit ")" <* nl)
+  , Snippet "printIO" $ lit "liftIO . print $"
+  , Snippet "f"  $ void (lit "(\\ " *> place "_" <* lit " -> " <* place "undefined" <* lit ")" <* nl)
+  , Snippet "ff" $ void (lit "$ \\ " *> place "_" <* lit " -> " <* place "undefined" <* nl)
   , Snippet "if" $ void $ do
       lit "if "   *> place "" <* nl
       lit "then " *> place "" <* nl
@@ -130,8 +132,8 @@ derivingSnippets =
 
 commentSnippets :: [Snippet]
 commentSnippets =
-  [ Snippet "--=" $ line "-- ========================================================================= --"
-  , Snippet "---" $ line "-------------------------------------------------------------------------------"
+  [ Snippet "bbar" $ line ("-- "<> R.fromText (T.pack $ replicate 74 '=') <>" --")
+  , Snippet "bar"  $ line . R.fromText . T.pack $ replicate 80 '-'
   , Snippet "box"  $ genericbox "(c) Sam Stites, 2017" "BSD3"        "sam@stites.io"
   , Snippet "sbox" $ genericbox "(c) Sentenai, 2017"   "Proprietary" "sam@sentenai.com"
   ]
@@ -139,17 +141,17 @@ commentSnippets =
     genericbox :: R.YiString -> R.YiString -> R.YiString -> SnippetBody ()
     genericbox c l m = do
       f <- guessModuleName <$> refer filename
-      line "-------------------------------------------------------------------------------"
-      line "-- |"
-      lit  "-- Module    :  " *> place f <* nl
-      lit  "-- Copyright :  " *> place c <* nl
-      lit  "-- License   :  " *> place l <* nl
-      lit  "-- Maintainer:  " *> place m <* nl
-      line "-- Stability :  experimental"
-      line "-- Portability: non-portable"
-      line "--"
-      lit  "-- " *> place "" <* nl
-      line "-------------------------------------------------------------------------------"
+      line  "-------------------------------------------------------------------------------"
+      line  "-- |"
+      line ("-- Module    :  " <> f)
+      lit   "-- Copyright :  " *> place c <* nl
+      lit   "-- License   :  " *> place l <* nl
+      lit   "-- Maintainer:  " *> place m <* nl
+      line  "-- Stability :  experimental"
+      line  "-- Portability: non-portable"
+      line  "--"
+      lit   "-- " *> place "" <* nl
+      line  "-------------------------------------------------------------------------------"
 
 guessModuleName :: R.YiString -> R.YiString
 guessModuleName
