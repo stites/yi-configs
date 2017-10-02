@@ -11,6 +11,7 @@ import qualified Data.Text as T
 
 import qualified Yi.Rope as R
 import Yi.Snippet
+import Data.Maybe
 
 mySnippets :: [Snippet]
 mySnippets
@@ -87,7 +88,7 @@ importSnippets =
       lit "import qualified "
       moduleName <- place "Data.HashMap.Strict"
       lit " as "
-      abbrev <- R.filter (`elem` ['A'..'Z']) . dropCommon <$> refer moduleName
+      abbrev <- findAbbrev <$> refer moduleName
       lit abbrev
 
   , Snippet "mm" $ do
@@ -167,10 +168,27 @@ guessModuleName
 
 dropCommon :: R.YiString -> R.YiString
 dropCommon s =
-    case (R.split (== '.') s) of
-        [x] -> x
-        "Control" : rest -> R.intercalate "." rest
-        "Data" : rest -> R.intercalate "." rest
-        _ -> s
+  case (R.split (== '.') s) of
+    [x] -> x
+    "Control":rest -> R.intercalate "." rest
+    "Data":rest    -> R.intercalate "." rest
+    _   -> s
+
+
+findAbbrev :: R.YiString -> R.YiString
+findAbbrev s =
+  case compare (R.length abbrev) 2 of
+    GT -> foldr go mempty $ R.split (== '.') (dropCommon s)
+    _  -> abbrev
+
+  where
+    abbrev :: R.YiString
+    abbrev = R.filter (`elem` ['A'..'Z']) . dropCommon $ s
+
+    go :: R.YiString -> R.YiString -> R.YiString
+    go el memo =
+      if R.null el
+      then memo
+      else memo <> (R.fromString $ maybe "" (:"") (R.head el))
 
 
