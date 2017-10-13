@@ -176,19 +176,5 @@ dropCommon s =
 
 
 findAbbrev :: R.YiString -> R.YiString
-findAbbrev s =
-  case compare (R.length abbrev) 2 of
-    GT -> foldr go mempty $ R.split (== '.') (dropCommon s)
-    _  -> abbrev
-
-  where
-    abbrev :: R.YiString
-    abbrev = R.filter (`elem` ['A'..'Z']) . dropCommon $ s
-
-    go :: R.YiString -> R.YiString -> R.YiString
-    go el memo =
-      if R.null el
-      then memo
-      else memo <> (R.fromString $ maybe "" (:"") (R.head el))
-
+findAbbrev = R.take 2 . R.filter (`elem` ['A'..'Z']) . dropCommon
 

@@ -48,10 +48,12 @@ executable yi
     , binary
     , data-default
     , compiler-warnings
+    , ghcid
   other-modules:
       Make
       MyIntero
       MySnippets
       Yi.Ghcid
+      Yi.MultiCursors
       YiWarning
   default-language: Haskell2010

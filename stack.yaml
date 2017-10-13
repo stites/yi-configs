@@ -2,14 +2,10 @@ resolver: lts-8.18
 packages:
   - '.'
   - 'yi/yi-core'
-  - 'yi/yi-dynamic-configuration'
-  - 'yi/yi-frontend-pango'
   - 'yi/yi-frontend-vty'
   - 'yi/yi-fuzzy-open'
   - 'yi/yi-intero'
   - 'yi/yi-ireader'
-  - 'yi/yi-keymap-cua'
-  - 'yi/yi-keymap-emacs'
   - 'yi/yi-keymap-vim'
   - 'yi/yi-language'
   - 'yi/yi-misc-modes'
@@ -19,3 +15,4 @@ packages:
 extra-deps:
   - yi-rope-0.10
   - compiler-warnings-0.1.0
+  - ghcid-0.6.7
