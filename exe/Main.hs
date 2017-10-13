@@ -31,7 +31,7 @@ import Yi.Config.Default.Vim (configureVim)
 import Yi.Config.Default.Vty (configureVty)
 import Yi.Debug (initDebug)
 
-import Make
+import qualified Make
 import Yi.Intero
 import Yi.Fuzzy
 import qualified Data.Attoparsec.Text as P
@@ -44,7 +44,8 @@ import MyIntero (interoExCommands, exInteroEval, parseText, exInteroStart, exInt
 import Yi.Ghcid (ghcid)
 
 data CommandLineOptions = CommandLineOptions
-  { startOnLine :: Maybe Int
+  { debug :: Bool
+  , startOnLine :: Maybe Int
   , files :: [String]
   }
 
@@ -59,7 +60,10 @@ commandLineOptions = nada <|> yada
 
     yada :: Parser (Maybe CommandLineOptions)
     yada = Just <$> (CommandLineOptions
-      <$> optional (option auto
+      <$> (flag False True
+          ( long "debug"
+         <> help "log output to yi-debug-output.txt"))
+      <*> optional (option auto
           ( long "line"
          <> short 'l'
          <> metavar "NUM"
@@ -76,8 +80,7 @@ main =
       config :: Config <- execStateT
           (runConfigM myConfig >> (startActionsA .= (openFileActions ++ [moveLineAction])))
           defaultConfig
-      -- for debugging
-      (initDebug "yi-debug-output.txt")
+      when (debug clo) (initDebug "yi-debug-output.txt")
       startEditor config Nothing
   where
    opts = info (helper <*> commandLineOptions)
@@ -121,9 +124,9 @@ myBindings eval =
   , nmap  "<C-u>"  (withCurrentBuffer $ scrollScreensB (-1))
   , nmap  "<C-S-l>"  (withCurrentBuffer (transposeB unitWord Forward >> leftB))
   , nmap  "<C-S-h>"  (withCurrentBuffer (transposeB unitWord Backward))
-  , nmap  "<C-@>"  showErrorE
-  , nmap  "<M-d>"  debug
-  , nmap   ",s"    insertErrorMessageE
+  , nmap  "<C-@>"  Make.showErrorE
+  , nmap  "<M-d>"  Make.debug
+  , nmap   ",s"    Make.insertErrorMessageE
   , imapY  "<Tab>" (withEditor expander)
   ]
   where
